@@ -3,6 +3,7 @@ jQuery(function($){
         var url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20cricket.scorecard.live&format=json&env=store%3A%2F%2F0TxIGQMQbObzvU4Apia0V0&callback=";
         
         function getData(){
+            console.log('t');
             $.getJSON(url, function(data){
                 if(data.query.results == null){
                     $(".score-container").slideUp(500, function(){
@@ -18,15 +19,17 @@ jQuery(function($){
                         }else{
                             var datavar = data.query.results.Scorecard;
                         }
+
                         $.each(datavar, function(key, val){
-                            console.log(this);
+                            //console.log(this);
                             var THIS = this;
                             var is1, is2, t1, t2, i1, i2, wi;
                             t1 = this.teams[0].fn;
                             t2 = this.teams[1].fn;
                             i1 = this.teams[0].i;
                             i2 = this.teams[1].i;
-                            if(this.series.series_name === "Cricket World Cup, 2015"){
+                            if(THIS.series.series_name === "Cricket World Cup, 2015" || THIS.series.series_name === "World Cup Coverage"){
+
                                 if(this.teams[0].i == this.toss.win && this.toss.bat == "1"){
                                     is1 = 0; is2 = 1;
                                 }else if(this.teams[0].i == this.toss.win && this.toss.bat == "0"){
@@ -36,10 +39,6 @@ jQuery(function($){
                                 }else if(this.teams[1].i == this.toss.win && this.toss.bat == "0"){
                                     is1 = 0; is2 = 1;
                                 }
-                                
-                                
-                                
-
                                 if(this.ms === "Match Ended"){
                                     if(this.result.winner == i1){
                                         wi = i1;
@@ -100,6 +99,6 @@ jQuery(function($){
             }
         }
        
-        var int = setInterval(getData(), 15000);
+        var int = setInterval(getData, 20000);
     });
 });
